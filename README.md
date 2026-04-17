@@ -23,7 +23,7 @@ Para rodar este projeto localmente, você precisa espelhar a infraestrutura de n
 **1. Instale as dependências:**
 ```bash
 npm install
-
+```
 **2. Configure as variáveis de ambiente:**
 Crie um arquivo .env.local na raiz do projeto. NUNCA utilize chaves service_role (Secret) neste repositório, pois variáveis NEXT_PUBLIC_ são expostas ao navegador.
 
@@ -31,12 +31,12 @@ Snippet de código
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=sua_url_do_projeto
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anon_publica
-
+```
 **3. Inicie o servidor de desenvolvimento:**
 
-´´´bash
+```bash
 npm run dev
-
+```
 O catálogo estará disponível em http://localhost:3000.
 
 **📊 Roadmap**
