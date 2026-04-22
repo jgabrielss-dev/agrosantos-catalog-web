@@ -63,16 +63,16 @@ export default function GerenciadorDestaques({
           <p className="text-xs font-bold text-gray-500 uppercase mb-2">Pesquisar para Adicionar</p>
           <div className="flex gap-2">
             <input 
-              type="text" 
+              type="text"
               value={termo}
               onChange={(e) => setTermo(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && buscarNoCatalogo()}
               placeholder={contextoAtivo === 'GLOBAL' ? "Buscar no estoque todo..." : `Buscar em ${contextoAtivo}...`}
-              className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-1 px-3 py-2 rounded-lg border border-gray-500 text-gray-500 text-sm outline-none focus:ring-2 focus:ring-green-500"
             />
             <button 
               onClick={buscarNoCatalogo}
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-black"
+              className="bg-gray-800 text-white px-2 py-2 rounded-lg text-sm font-bold hover:bg-black"
             >
               {buscando ? '...' : 'Buscar'}
             </button>
@@ -82,7 +82,7 @@ export default function GerenciadorDestaques({
             {resultados.map((p) => (
               <div key={p.id} className="flex items-center justify-between p-2 bg-white rounded-lg border shadow-sm">
                 <div className="flex flex-col overflow-hidden mr-2">
-                  <span className="text-xs font-bold text-gray-700 truncate">{p.nome}</span>
+                  <span className="text-xs font-bold text-gray-700 truncate"title={p.nome}>{p.nome}</span>
                   <span className="text-[10px] text-gray-400">{p.categoria}</span>
                 </div>
                 <form action={adicionarAction}>
@@ -105,7 +105,7 @@ export default function GerenciadorDestaques({
           <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
             {produtosNaVitrine.map((p: any) => (
               <div key={p.id} className="flex items-center justify-between p-3 bg-white border border-blue-100 rounded-lg shadow-sm">
-                <span className="text-xs font-bold text-gray-800 truncate pr-2">{p.nome}</span>
+                <span className="text-xs font-bold text-gray-800 truncate pr-2"title={p.nome}>{p.nome}</span>
                 <form action={removerAction}>
                   <input type="hidden" name="id" value={p.id} />
                   <input type="hidden" name="contexto" value={contextoAtivo} />
