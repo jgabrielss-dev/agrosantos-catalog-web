@@ -1,50 +1,66 @@
-# Agrosantos Catalog - Web Interface
 
-## 🚀 Missão
-Este é o front-end do ecossistema Agrosantos. O objetivo deste repositório é consumir o banco de dados populado pelo [Pipeline ETL](https://github.com/jgabrielss-dev/agrosantos-data-pipeline) e entregar um catálogo de produtos de altíssima performance, com foco em estabilidade e velocidade de renderização em dispositivos móveis.
-
-## 🛠️ Stack Técnica
-- **Framework:** Next.js (App Router)
-- **Linguagem:** TypeScript (Tipagem estática inegociável)
-- **Estilização:** Tailwind CSS
-- **BaaS / Banco de Dados:** Supabase (PostgreSQL)
-
-## 🏗️ Decisões Arquiteturais
-
-1. **Server-Side Rendering (SSR) Default:** O catálogo não utiliza abordagens tradicionais de Single Page Applications (SPA) com `useEffect` e telas de *loading*. A busca de dados (`fetch`) na tabela `produtos` do Supabase é feita diretamente em Server Components. Isso garante que o navegador do cliente receba o HTML já montado, zerando o *Layout Shift* e otimizando o SEO.
-
-2. **Separação de Preocupações (Separation of Concerns):**
-   Este front-end é estritamente "burro" em relação à origem dos dados. Ele não faz extração de planilhas nem processamento pesado. Ele confia plenamente na integridade da tabela `produtos` mantida pelo job assíncrono em Python do repositório de dados.
-
-## 🔐 Configuração e Instalação
-
-Para rodar este projeto localmente, você precisa espelhar a infraestrutura de nuvem.
-
-**1. Instale as dependências:**
-```bash
-npm install
 ```
-**2. Configure as variáveis de ambiente:**
-Crie um arquivo .env.local na raiz do projeto. NUNCA utilize chaves service_role (Secret) neste repositório, pois variáveis NEXT_PUBLIC_ são expostas ao navegador.
+# Agrosantos Digital Catalog & Admin Dashboard
 
-Snippet de código
-```bash
-NEXT_PUBLIC_SUPABASE_URL=sua_url_do_projeto
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anon_publica
+This repository contains the front-end architecture and server-side logic for the Agrosantos digital catalog. Built with Next.js (App Router), it serves as a high-performance, SEO-optimized e-commerce storefront coupled with a Zero-Trust administrative dashboard for inventory and showcase management.
+
+## 🏗️ Architecture & Core Engineering
+
+This project abandons heavy client-side state management in favor of a **Hybrid Rendering Strategy**, leveraging Next.js Server Components for data fetching and secure mutations, while keeping Client Components strictly for interactive UI elements.
+
+### 🔑 Key Technical Highlights
+
+* **Zero-Trust Admin Routing:** The `/adm` dashboard is protected via Next.js Server Actions and encrypted HTTP-Only cookies. Administrative logic and mutation functions are never bundled or exposed to the client browser.
+* **Multi-Dimensional Search Engine:** Built using native `URLSearchParams` to handle complex intersections of text queries and category filters. This ensures all search states are instantly shareable, SSR-friendly, and highly performant.
+* **Contextual Display Engine:** The UI dynamically reads from a relational Supabase structure to render isolated "Showcases" (e.g., Global Highlights vs. Category-Specific Highlights) without hardcoding IDs into the front-end.
+* **Z-Index Physics & Layout Shifts:** Custom UI engineering using Tailwind CSS to create fluid, overlapping search interfaces (`sticky top-0`) that override the global layout upon scrolling, maximizing mobile conversion space.
+* **RPC (Remote Procedure Call) Integration:** Offloads heavy data extraction (e.g., distinct category mapping) directly to PostgreSQL functions, preventing memory bottlenecks on the Vercel edge network.
+
+## 🛠️ Tech Stack
+
+* **Framework:** Next.js (App Router) / React
+* **Styling:** Tailwind CSS
+* **Database & BaaS:** Supabase (PostgreSQL)
+* **Security:** Supabase RLS (Row Level Security) + Custom HTTP-Only Cookies
+
+## ⚙️ Environment Variables
+
+To run this project locally, create a `.env.local` file in the root directory with the following variables:
+
+```env
+# Public Supabase Keys (Safe to expose to the browser)
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Master Password for the Admin Dashboard (Server-Side Only)
+ADMIN_PASSWORD=your_secure_admin_password
 ```
-**3. Inicie o servidor de desenvolvimento:**
 
-```bash
-npm run dev
-```
-O catálogo estará disponível em http://localhost:3000.
+## 🚀 How to Run (Local Environment)
 
-**📊 Roadmap**
+1. Clone the repository.
+2. Install dependencies:
+   **Bash**
 
-[x] Sprint 3: Setup Next.js App Router, integração com Supabase Client e prova de conceito SSR.
+   ```
+   npm install
+   ```
+3. Set up your `.env.local` file.
+4. Start the development server:
+   **Bash**
 
-[ ] Sprint 4: Implementação de barra de busca no banco e paginação para controle de carga (limite de banda).
+   ```
+   npm run dev
+   ```
+5. Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) for the storefront and [http://localhost:3000/adm](https://www.google.com/search?q=http://localhost:3000/adm) for the dashboard.
 
-[ ] Sprint 5: Refinamento de UI (Grid de cards e otimização de imagens).
+## ☁️ Deployment Strategy
 
-Desenvolvido por João Gabriel | Análise e Desenvolvimento de Sistemas | Agrosantos Web
+This application is fully optimized for **Vercel** deployment.
+
+* Server Actions seamlessly translate to Serverless Functions.
+* Route caching is dynamically invalidated using `revalidatePath()` upon admin mutations, ensuring the storefront is instantly updated without rebuilding the entire site.
+
+---
+
+*Architected and developed by [João Gabriel](https://github.com/your-github-username).*
