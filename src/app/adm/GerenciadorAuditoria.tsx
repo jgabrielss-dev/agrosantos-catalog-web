@@ -95,24 +95,35 @@ export default function GerenciadorAuditoria({ atualizarAction }: { atualizarAct
               </div>
             </div>
 
-            {/* NOVO BLOCO DE UPLOAD DE IMAGEM */}
-            <div className="p-3 bg-gray-50 border rounded-lg">
-              <label className="block text-xs font-bold text-gray-600 mb-2">Substituir Imagem (Upload)</label>
-              <input 
-                type="file" 
-                name="imagem_file" 
-                accept="image/png, image/jpeg, image/webp" 
-                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" 
-              />
-              {produtoEditando.url_imagem && (
-                <p className="text-[10px] text-gray-500 mt-2 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                  Imagem atual vinculada:{' '}
-                  <a href={produtoEditando.url_imagem} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                    Visualizar
-                  </a>
-                </p>
-              )}
+            <div className="p-4 bg-gray-50 border rounded-lg">
+              <label className="block text-xs font-bold text-gray-600 mb-3">Imagem do Produto</label>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                {produtoEditando.url_imagem ? (
+                  <div className="shrink-0 bg-white p-1 border rounded-lg shadow-sm">
+                    <img 
+                      src={produtoEditando.url_imagem.replace('.co//storage', '.co/storage')} 
+                      alt={produtoEditando.nome} 
+                      className="w-20 h-20 object-contain rounded-md"
+                    />
+                  </div>
+                ) : (
+                  <div className="shrink-0 w-20 h-20 flex items-center justify-center bg-gray-200 border rounded-lg shadow-sm">
+                    <span className="text-[10px] text-gray-400 font-bold uppercase text-center leading-tight">Sem<br/>Foto</span>
+                  </div>
+                )}
+                
+                <div className="flex-1 w-full">
+                  <input 
+                    type="file" 
+                    name="imagem_file" 
+                    accept="image/png, image/jpeg, image/webp" 
+                    className="w-full text-sm text-gray-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer transition-colors" 
+                  />
+                  <p className="text-[10px] text-gray-500 mt-2">
+                    Faça o upload de uma nova imagem para substituir a atual.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <button type="submit" className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors shadow-sm">

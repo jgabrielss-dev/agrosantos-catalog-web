@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { createClient } from '@supabase/supabase-js';
 import GerenciadorDestaques from './GerenciadorDestaques';
 import GerenciadorAuditoria from './GerenciadorAuditoria';
+import GerenciadorPedidos from './GerenciadorPedidos';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -171,9 +172,15 @@ export default async function AdminPage(props: { searchParams: Promise<{ context
       </header>
 
       <div className="max-w-6xl mx-auto p-6 mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-8">
           
-          <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+          {/* SECÇÃO DE PEDIDOS */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+             <GerenciadorPedidos />
+          </div>
+
+          {/* SECÇÃO GESTOR DE VITRINES */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full"></span>
               Gestor de Vitrines Múltiplas
@@ -187,13 +194,14 @@ export default async function AdminPage(props: { searchParams: Promise<{ context
             />
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-200">
-              <h2 className="text-md font-bold text-blue-900 mb-2">Motor ETL</h2>
-              <a href="#" className="block text-center bg-blue-600 text-white py-2 rounded-lg text-sm font-bold">Abrir Nuvem</a>
-            </div>
+          {/* SECÇÃO MOTOR ETL */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-200">
+            <h2 className="text-md font-bold text-blue-900 mb-2">Motor ETL</h2>
+            <a href="https://agrosantos-data-pipeline.streamlit.app" target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors">Abrir Nuvem</a>
           </div>
-          <div className="lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mt-2">
+
+          {/* SECÇÃO AUDITORIA */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
               Auditoria de Produtos (Edição Manual)
@@ -202,6 +210,7 @@ export default async function AdminPage(props: { searchParams: Promise<{ context
             
             <GerenciadorAuditoria atualizarAction={atualizarProdutoManual} />
           </div>
+
         </div>
       </div>
     </main>

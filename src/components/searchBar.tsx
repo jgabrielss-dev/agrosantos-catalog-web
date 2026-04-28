@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useCart } from '@/store/useCart';
+import { ShoppingCart } from 'lucide-react';
 
 // Agora o componente EXIGE que quem o chamar, entregue a lista de categorias.
 export function SearchBar({ categoriasDisponiveis }: { categoriasDisponiveis: string[] }) {
@@ -13,6 +15,9 @@ export function SearchBar({ categoriasDisponiveis }: { categoriasDisponiveis: st
 
   const [busca, setBusca] = useState(queryAtual);
   const [categoria, setCategoria] = useState(categoriaAtual);
+
+  const { itens, setCartOpen } = useCart();
+  const qtdItens = itens.reduce((acc, i) => acc + i.quantidade, 0);
 
   
   useEffect(() => {
@@ -63,6 +68,17 @@ export function SearchBar({ categoriasDisponiveis }: { categoriasDisponiveis: st
         className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-green-700 transition-colors shadow-sm whitespace-nowrap"
       >
         Filtrar
+      </button>
+      <button type="button"
+      onClick={() => setCartOpen(true)}
+      className="relative p-3 bg-green-100 text-green-700 rounded-xl hover:bg-green-200"
+      >
+      <ShoppingCart size={24} />
+      {qtdItens > 0 && (
+      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">
+      {qtdItens}
+      </span>
+      )}
       </button>
     </form>
   );
